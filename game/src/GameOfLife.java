@@ -8,6 +8,7 @@ public class GameOfLife {
 
     private int size; //size of the grid
     private Boolean[][] grid;  //true => alive false => dead
+    private int genNum = 0;
 
     public GameOfLife(int size){
         if(size <=0) throw new IllegalArgumentException("Grid size can't be <= 0. Given grid size: " + size);
@@ -16,6 +17,7 @@ public class GameOfLife {
     }
 
     public void startGameWithRandomInput(){
+        ++genNum;
         Random random = new Random();
         for(int i = 0; i<size; ++i){
             for(int j = 0; j<size; ++j){
@@ -25,6 +27,7 @@ public class GameOfLife {
     }
 
     public void goToNextGeneration(){
+        ++genNum;
         Boolean[][] nextgen =  new Boolean[size][size];
         for(int i = 0; i<size; ++i){
             for(int j = 0; j<size; ++j){
@@ -47,7 +50,7 @@ public class GameOfLife {
         startGameWithRandomInput();
         while(true){
             displayGrid();
-            System.out.println("Please press Enter to go to next generation... ");
+            System.out.println("Please press Enter to go to next generation. Press Ctrl+C to exit");
             try {
                 System.in.read();
             } catch (IOException e) {
@@ -58,6 +61,7 @@ public class GameOfLife {
     }
 
     public void displayGrid(){
+        System.out.println("Current Generation: " + genNum);
         for(int i = 0; i<size; ++i){
             for(int j = 0; j<size; ++j){
                 if(grid[i][j]) {
