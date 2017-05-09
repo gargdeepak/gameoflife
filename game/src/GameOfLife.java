@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.Random;
+import java.util.Scanner;
 
 /**
  * Created by deepak on 4/05/17.
@@ -14,9 +15,28 @@ public class GameOfLife {
         if(size <=0) throw new IllegalArgumentException("Grid size can't be <= 0. Given grid size: " + size);
         this.size = size;
         grid = new Boolean[size][size];
+        initializeGameWithRandomInput();
     }
 
-    public void startGameWithRandomInput(){
+    public GameOfLife() {
+        Scanner in = new Scanner(System.in);
+        size = in.nextInt();
+        if(size <=0) throw new IllegalArgumentException("Grid size can't be <= 0. Given grid size: " + size);
+        grid = new Boolean[size][size];
+        ++genNum;
+        for(int i = 0; i<size; ++i){
+            for(int j = 0; j<size; ++j){
+                grid[i][j] = charToBoolean(in.nextInt());
+            }
+        }
+    }
+
+    private Boolean charToBoolean(int input) {
+        if(input == 1) return true;
+        return false;
+    }
+
+    public void initializeGameWithRandomInput(){
         ++genNum;
         Random random = new Random();
         for(int i = 0; i<size; ++i){
@@ -47,7 +67,6 @@ public class GameOfLife {
     }
 
     public void startGame(){
-        startGameWithRandomInput();
         while(true){
             displayGrid();
             System.out.println("Please press Enter to go to next generation. Press Ctrl+C to exit");
@@ -95,10 +114,16 @@ public class GameOfLife {
 
     public static void main(String[] args){
         int size = 7;
+        GameOfLife game = null;
         if(args != null && args.length > 0){
-            size = Integer.parseInt(args[0]);
+            try{
+                size = Integer.parseInt(args[0]);
+                game = new GameOfLife(size);
+            }catch (NumberFormatException ex){
+
+            }
         }
-        GameOfLife game = new GameOfLife(size);
+        if(game == null) game = new GameOfLife();
         game.startGame();
     }
 
